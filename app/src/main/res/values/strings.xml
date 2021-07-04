@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Food Recipe</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="don_t_have_account_register">Don\'t Have Account? Register</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account_login">Already have an Account? Login</string>
+    <string name="name">Name</string>
+    <string name="reset">Reset</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="post">Post</string>
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="food_recipe_name">Food Recipe Name</string>
+    <string name="image_description">Image Description</string>
+    <string name="food_description">Food Description</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="methods">Methods</string>
+    <string name="more">more</string>
+    <string name="edit">Edit</string>
+    <string name="comment">Comments</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+</resources>
