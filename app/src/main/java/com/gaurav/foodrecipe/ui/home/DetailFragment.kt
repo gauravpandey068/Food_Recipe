@@ -80,7 +80,7 @@ class DetailFragment : Fragment() {
                 popup.menuInflater.inflate(R.menu.popup_menu, popup.menu)
                 popup.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.edit -> setCurrentFragment(AddNewPostFragment())
+                        R.id.edit -> updatePost(postId, userId)
                         R.id.delete -> deletePost(postId)
                     }
                     true
@@ -119,6 +119,18 @@ class DetailFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun updatePost(postId: String, userId: String) {
+        val bundle = Bundle()
+        bundle.putString("postId", postId)
+        bundle.putString("userId", userId)
+        val fragmentNext = EditPostFragment()
+        fragmentNext.arguments = bundle
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fl_layout, fragmentNext)
+        fragmentTransaction.commit()
     }
 
     private fun getComment() {
