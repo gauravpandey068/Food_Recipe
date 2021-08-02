@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -28,6 +29,16 @@ class EditPostFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_post, container, false)
+        val callBack = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                activity!!.supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fl_layout, DetailFragment())
+                    commit()
+                }
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callBack)
 
         val postId = arguments?.getString("postId").toString()
         val userId = arguments?.getString("userId").toString()

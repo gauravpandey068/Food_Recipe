@@ -49,17 +49,29 @@ class ProfileFragment : Fragment() {
         val currentUser = auth.currentUser
         val uid = currentUser!!.uid
         val email = currentUser.email.toString()
+        lateinit var imageUrl:String
+        lateinit var userName:String
 
         val docRef = db.collection("users").document(uid)
         docRef.get().addOnSuccessListener { documentSnapshot ->
             val userInfo = documentSnapshot.toObject<User>()
-            Glide.with(this).load(userInfo!!.imageUrl.toString()).into(binding.profileImage)
-            //binding.profileName.text = userInfo.name
-            binding.profileName.text = userInfo.name
+            imageUrl = userInfo!!.imageUrl.toString()
+            userName = userInfo.name.toString()
+            Glide.with(this).load(imageUrl).into(binding.profileImage)
+            binding.profileName.text = userName
             binding.progressBarProfile.visibility = View.INVISIBLE
         }
         binding.buttonEditProfile.setOnClickListener {
-            TODO("Edit Profile")
+            val bundle = Bundle()
+            bundle.putString("userId", uid)
+            bundle.putString("imageUrl", imageUrl)
+            bundle.putString("userName", userName)
+            val fragmentNext = EditProfileFragment()
+            fragmentNext.arguments = bundle
+            val fragmentManager = requireActivity().supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fl_layout, fragmentNext)
+            fragmentTransaction.commit()
 
         }
         binding.buttonChangePassword.setOnClickListener {

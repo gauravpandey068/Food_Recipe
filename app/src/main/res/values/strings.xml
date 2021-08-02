@@ -29,4 +29,6 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="update">Update</string>
+    <string name="change_profile_picture">Change Profile Picture</string>
+    <string name="change_user_name">Change User Name</string>
 </resources>

@@ -42,12 +42,14 @@ class RegisterFragment : Fragment() {
         val imagePick = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback { uri ->
-                imageUri = uri
-                binding.profileImage.setImageURI(uri)
-                binding.textViewImageLabel.visibility = View.GONE
-                binding.inputView.visibility = View.VISIBLE
-            }
-        )
+                try {
+                    imageUri = uri
+                    binding.profileImage.setImageURI(uri)
+                    binding.textViewImageLabel.visibility = View.GONE
+                } catch (e: Exception) {
+                    Toast.makeText(context, "Choose a Image", Toast.LENGTH_LONG).show()
+                }
+            })
 
         binding.loginText.setOnClickListener {
             findNavController().navigate(
@@ -84,7 +86,6 @@ class RegisterFragment : Fragment() {
                 }
                 return@setOnClickListener
             }
-
             registerUser(inputTextFieldEmail, inputTextFieldPassword)
         }
 
@@ -116,7 +117,7 @@ class RegisterFragment : Fragment() {
             if (it.isSuccessful) {
                 val user = auth.currentUser
                 val uid = user!!.uid
-                Log.d("register", uid)
+
                 uploadImage(uid)
 
                 val intent = Intent(context, HomeActivity::class.java)
@@ -133,6 +134,7 @@ class RegisterFragment : Fragment() {
     private fun uploadUserData(uid: String) {
         val db = Firebase.firestore
         val name = binding.outlinedTextFieldUserName.editText?.text.toString()
+
         val user = User(uid, name, imageUrl)
         db.collection("users").document(uid).set(user).addOnSuccessListener {
             Toast.makeText(context, "Register Successfully", Toast.LENGTH_SHORT).show()

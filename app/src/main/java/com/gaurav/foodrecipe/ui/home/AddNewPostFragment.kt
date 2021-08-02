@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -63,9 +64,13 @@ class AddNewPostFragment : Fragment() {
         val imagePick = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback { uri ->
-                imageUri = uri
-                binding.imageViewNewPost.setImageURI(uri)
-                binding.textViewImageLabelAddPost.visibility = View.GONE
+                try {
+                    imageUri = uri
+                    binding.imageViewNewPost.setImageURI(uri)
+                    binding.textViewImageLabelAddPost.visibility = View.GONE
+                } catch (e: Exception) {
+                    Toast.makeText(context, "Choose a Image", Toast.LENGTH_LONG).show()
+                }
             }
         )
         binding.imageViewNewPost.setOnClickListener {
@@ -75,10 +80,14 @@ class AddNewPostFragment : Fragment() {
         binding.ButtonPost.setOnClickListener {
             hideKeyboard()
             //check empty
-            title = binding.outlinedTextFieldTitle.editText?.text.toString().replaceFirstChar { it.titlecaseChar() }
-            description = binding.outlinedTextFieldDescription.editText?.text.toString().replaceFirstChar { it.titlecaseChar() }
-            ingredient = binding.outlinedTextFieldIngredient.editText?.text.toString().replaceFirstChar { it.titlecaseChar() }
-            method = binding.outlinedTextFieldMethods.editText?.text.toString().replaceFirstChar { it.titlecaseChar() }
+            title = binding.outlinedTextFieldTitle.editText?.text.toString()
+                .replaceFirstChar { it.titlecaseChar() }
+            description = binding.outlinedTextFieldDescription.editText?.text.toString()
+                .replaceFirstChar { it.titlecaseChar() }
+            ingredient = binding.outlinedTextFieldIngredient.editText?.text.toString()
+                .replaceFirstChar { it.titlecaseChar() }
+            method = binding.outlinedTextFieldMethods.editText?.text.toString()
+                .replaceFirstChar { it.titlecaseChar() }
 
             if (TextUtils.isEmpty(title)) {
                 binding.outlinedTextFieldTitle.error = "Food Recipe Name cannot be Empty!"
@@ -105,7 +114,13 @@ class AddNewPostFragment : Fragment() {
                 }
                 return@setOnClickListener
             }
-            uploadImage()
+            try{
+                uploadImage()
+                return@setOnClickListener
+            }catch (e:Exception){
+                binding.progressBarPost.isVisible = false
+                Toast.makeText(context, "Please Try Again!", Toast.LENGTH_LONG).show()
+            }
         }
 
         return binding.root
@@ -132,7 +147,7 @@ class AddNewPostFragment : Fragment() {
             bundle.putString("postId", postId)
             bundle.putString("userId", uid)
             bundle.putString("title", title)
-            bundle.putString("description",description)
+            bundle.putString("description", description)
             bundle.putString("imageUrl", imageUrl)
             bundle.putString("ingredient", ingredient)
             bundle.putString("method", method)
